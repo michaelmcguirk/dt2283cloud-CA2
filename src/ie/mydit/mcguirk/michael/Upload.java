@@ -12,6 +12,11 @@ import com.google.appengine.api.blobstore.*;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 public class Upload extends HttpServlet
 {
@@ -21,31 +26,26 @@ public class Upload extends HttpServlet
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory
 			.getBlobstoreService();
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	UserService userService = UserServiceFactory.getUserService();
+	ImagesService is = ImagesServiceFactory.getImagesService();
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException
 	{
 		@SuppressWarnings("deprecation")
 		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
-
+		User u = userService.getCurrentUser();
+		String email = u.getEmail();
+		
 		BlobKey blobKey = blobs.get("myFile2");
+		String imgURL = is.getServingUrl(blobKey);
+		String thumbURL = is.getServingUrl(blobKey, 150, false);
 		
-		
-		for (Entry<String, BlobKey> entry : blobs.entrySet())
-		{
-			String i = entry.getValue().getKeyString();
-		    System.out.println(entry.getKey() + "/" + i);
-		    res.getWriter().println(entry.getKey() + "/" + i);
-		}
-		Principal myPrincipal = req.getUserPrincipal();
-		String email = myPrincipal.getName();
-		
-		Entity person = new Entity("Jimbob");
-
-		person.setProperty("name", email);
-		person.setProperty("age", 19);
-		datastore.put(person);
-		
+		Entity user = new Entity("User");
+		user.setProperty("email", email);
+		user.setProperty("URL", imgURL);
+		user.setProperty("thumbURL", thumbURL);
+		datastore.put(user);
 		
 		
 		try
@@ -64,7 +64,8 @@ public class Upload extends HttpServlet
 		} else
 		{
 			System.out.println("Uploaded a file with blobKey: " + blobKey.getKeyString());
-			res.sendRedirect("/serve?blob-key=" + blobKey.getKeyString());
+			//res.sendRedirect("/serve?blob-key=" + blobKey.getKeyString());
+			res.sendRedirect("/viewimages.jsp");
 		}
 	}
 }
