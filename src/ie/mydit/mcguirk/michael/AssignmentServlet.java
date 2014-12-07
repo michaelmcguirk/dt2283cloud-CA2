@@ -23,14 +23,17 @@ public class AssignmentServlet extends HttpServlet {
 		//Creates instance of UserService object to require user to login/register
 		UserService userService = UserServiceFactory.getUserService();  
 		Principal myPrincipal = req.getUserPrincipal();	//current user
-		//String myp = myPrincipal.toString();
-		//resp.getWriter().println(myp);
+ 
 		String emailAddress = null;
 		String thisURL = req.getRequestURI();
 		//fetch URL's to for login/out links 
 		String loginURL = userService.createLoginURL(thisURL);
 		String logoutURL = userService.createLogoutURL(thisURL);
 		String uploadURL = "/upload.jsp";
+		String imageURL = "/viewimages.jsp";
+		String allImages = "/viewalluserimages.jsp";
+		String adminAllImages = "/adminviewimages.jsp";
+		String publicImages = "/viewpublicimages.jsp";
 		System.out.println(loginURL);
 		
 		resp.setContentType("text/html");
@@ -38,8 +41,10 @@ public class AssignmentServlet extends HttpServlet {
 		if(myPrincipal == null) 
 		{
 			//if there is no current authenticated user, inform user and offer login/signup link.
-			resp.getWriter().println("<p>You are Not Logged In time</p>");
+			resp.getWriter().println("<p>You are Not Logged In</p>");
 			resp.getWriter().println("<p>You can <a href=\""+loginURL+"\">sign in here</a>.</p>");
+			resp.getWriter().println("<p>You can also <a href=\"" + publicImages +"\">view all public images as a guest</a>.</p>");
+
 		} // end if not logged in
 		
 		if(myPrincipal !=null) 
@@ -47,8 +52,15 @@ public class AssignmentServlet extends HttpServlet {
 			//if logged in, offer a logout link.
 			emailAddress = myPrincipal.getName();
 			resp.getWriter().println("<p>You are Logged in as (email): "+emailAddress+"</p>");
-			resp.getWriter().println("<p>You can <a href=\"" + uploadURL +"\">Upload</a>.</p>");
-			resp.getWriter().println("<p>You can <a href=\"" + logoutURL +"\">sign out</a>.</p>");
+			resp.getWriter().println("<p><a href=\"" + uploadURL +"\">Upload Picture</a>.</p>");
+			resp.getWriter().println("<p><a href=\""+imageURL+"\">View Your Pictures</a>.</p>");			
+			resp.getWriter().println("<p><a href=\"" + allImages +"\">View all user pictures(public)</a>.</p>");
+			
+			if(userService.isUserAdmin())
+			{
+				resp.getWriter().println("<p><a href=\"" + adminAllImages +"\">View all user pcitures (Admin Only)</a>.</p>");
+			}
+			resp.getWriter().println("<p><a href=\"" + logoutURL +"\">Sign out</a>.</p>");
 		} // end if logged in
 		
 	}

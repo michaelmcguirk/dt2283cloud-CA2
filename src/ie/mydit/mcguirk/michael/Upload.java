@@ -1,9 +1,7 @@
 package ie.mydit.mcguirk.michael;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -38,24 +36,23 @@ public class Upload extends HttpServlet
 		String email = u.getEmail();
 		
 		BlobKey blobKey = blobs.get("myFile2");
+		@SuppressWarnings("deprecation")
 		String imgURL = is.getServingUrl(blobKey);
+		@SuppressWarnings("deprecation")
 		String thumbURL = is.getServingUrl(blobKey, 150, false);
+		String defaultPermission = "public";
+		if(userService.isUserAdmin())
+		{
+			defaultPermission = "private";
+		}
 		
 		Entity user = new Entity("User");
 		user.setProperty("email", email);
 		user.setProperty("URL", imgURL);
 		user.setProperty("thumbURL", thumbURL);
+		user.setProperty("permission", defaultPermission);
 		datastore.put(user);
-		
-		
-		try
-		{
-			Thread.sleep(5000);
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 
 		if (blobKey == null)
 		{

@@ -10,6 +10,7 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page import="com.google.appengine.api.datastore.Query.CompositeFilterOperator"%>
 
 
 <%BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
@@ -27,70 +28,63 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
  	<tr>
  	<%
  		String userEmail = u.getEmail();
- 		String permissionButton = "";
-		Filter userFilter = new FilterPredicate("email", FilterOperator.EQUAL, userEmail);
-				Query q = new Query("User").setFilter(userFilter);
+ 		String permission = "public";
+ 		Filter userFilter = new FilterPredicate("email", FilterOperator.EQUAL, userEmail);
+ 		Filter permissionFilter = new FilterPredicate("permission", FilterOperator.EQUAL, permission);
+ 		Filter mainFilter = CompositeFilterOperator.or(userFilter, permissionFilter);
+		Query q = new Query("User").setFilter(mainFilter);
 		PreparedQuery pq = datastore.prepare(q);
 		int i = 0;
 
 		for (Entity result : pq.asIterable())
 		{
-		i++;
-			
+			i++;
+				
 			String thumbURL = (String) result.getProperty("thumbURL");
 			String imgURL = (String) result.getProperty("URL");
 			String email = (String) result.getProperty("email");
-			String permission = (String) result.getProperty("permission");
-			if(permission.equals("public"))
+			if(i%4 == 0)
 			{
-				permissionButton = "Make Private";
+ 	%>
+		 		</tr>
+				<tr>
+				<td>
+				<a href="<%= imgURL%>"><img src="<%= thumbURL%>"></a>
+				<p>
+	<%			
+				if(userEmail.equals(email))
+				{
+	%>
+					<form action="/delete" method="POST">
+			 			<input type="hidden" name="url" value="<%= imgURL%>">
+			 			<input type="submit" value="Delete">
+			 		</form>
+			 		</p>
+			 		<p><%= email%></p>
+					</td>
+	<%
+				}	
 			}
 			else
 			{
-				permissionButton = "Make Public";
-			}
-		if(i%4 == 0)
-		{
  	%>
- 		</tr>
-		<tr>
-		<td>
-		<a href="<%= imgURL%>"><img src="<%= thumbURL%>"></a>
-		<p>
-		<form action="/delete" method="POST">
- 			<input type="hidden" name="url" value="<%= imgURL%>">
- 			<input type="submit" value="Delete">
- 		</form>
- 		<form action="/setpermission" method="POST">
- 			<input type="hidden" name="permission" value="<%= permissionButton%>">
- 			<input type="hidden" name="img" value="<%= imgURL%>">
- 			<input type="submit" value="<%= permissionButton%>">
- 		</form>
- 		</p>
-		</td>
-
-		
-	<%		
-		}
-		else
-		{
- 	%>
- 		<td>
- 		<a href="<%= imgURL%>"><img src="<%= thumbURL%>"></a>
- 		<p>
-		<form action="/delete" method="POST">
- 			<input type="hidden" name="url" value="<%= imgURL%>">
- 			<input type="submit" value="Delete">
- 		</form>
- 		<form action="/setpermission" method="POST">
- 			<input type="hidden" name="permission" value="<%= permissionButton%>">
- 			<input type="hidden" name="img" value="<%= imgURL%>">
- 			<input type="submit" value="<%= permissionButton%>">
- 		</form>
- 		</p>
- 		</td>
+		 		<td>
+		 		<a href="<%= imgURL%>"><img src="<%= thumbURL%>"></a>
+		 		<p>
  	<%
- 		}
+				if(userEmail.equals(email))
+				{
+	%>
+					<form action="/delete" method="POST">
+			 			<input type="hidden" name="url" value="<%= imgURL%>">
+			 			<input type="submit" value="Delete">
+			 		</form>
+			 		</p>
+			 		<p><%= email%></p>
+			 		</td>
+ 	<%
+	 			}
+	 		}
  		}
  	%>
  	</table>
