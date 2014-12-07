@@ -1,0 +1,58 @@
+body
+{
+	background-color: #EFECCA;
+	text-align:center;
+}
+table
+{
+	align: center;
+	font-family: "TrebuchetMS";
+	font-size: 12px;
+	text-align: center;
+	border-spacing: 10px;
+}
+
+td
+{
+	background-color: #A7A37E;
+	padding: 10px;
+}
+
+li {
+    display: inline;
+}
+
+#header
+{
+	width: 100%;
+	height: 15%;
+	line-height: 100%;
+	vertical-align:middle;
+	font-family: "TrebuchetMS";
+	color: #EFECCA;
+	text-align: center;
+	float:left;
+	background-color:#002F2F;
+}
+
+#navigation
+{
+	width: 100%;
+	height: 7%;
+	float:left;
+	color: #E6E2BE;
+	font-family: "TrebuchetMS";
+	font-weight: bold;
+	font-variant:small-caps;
+	background-color:#046380;
+}
+
+a:LINK {
+	color: #E6E2BE;
+}
+a:VISITED {
+	color: #E6E2BE;
+}
+a:ACTIVE {
+	color: #E6E2BE;
+}

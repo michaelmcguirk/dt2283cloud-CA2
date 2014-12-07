@@ -1,3 +1,4 @@
+
 package ie.mydit.mcguirk.michael;
 
 import java.io.IOException;
@@ -18,6 +19,11 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.*;
 import com.google.appengine.api.images.*;
 
+/**
+ * @author Michael McGuirk
+ * D13123389
+ * Cloud Computing CA2
+ */
 public class Delete extends HttpServlet
 {
 	BlobstoreService blobstoreService = BlobstoreServiceFactory
@@ -31,7 +37,7 @@ public class Delete extends HttpServlet
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException 
 	{
-		String deleteURL = req.getParameter("url");
+		String deleteURL = req.getParameter("url");		//image url from POST data.
 			 
 			Filter userFilter = new FilterPredicate("URL", FilterOperator.EQUAL, deleteURL);
 			
@@ -41,8 +47,10 @@ public class Delete extends HttpServlet
 		for (Entity result : pq.asIterable())
 		{
 			Key k = result.getKey();
-			datastore.delete(k);
+			datastore.delete(k);	//delete entity from datastore.
 		}
+		
+		//Image deleted, Go Back to images. 
 		res.getWriter().println("Image has been deleted. Bye bye image...");
 		res.getWriter().println("<a href=\"/viewimages.jsp\">Back</a>");
 		

@@ -15,7 +15,11 @@ import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-
+/**
+ * @author Michael McGuirk
+ * D13123389
+ * Cloud Computing CA2
+ */
 public class Upload extends HttpServlet
 {
 
@@ -30,30 +34,37 @@ public class Upload extends HttpServlet
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException
 	{
+		//Get uploaded blobs from POST
 		@SuppressWarnings("deprecation")
 		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
+		
+		//Get the current logged in user.
 		User u = userService.getCurrentUser();
 		String email = u.getEmail();
 		
+		//Generate image and thumbnail image from blob
 		BlobKey blobKey = blobs.get("myFile2");
 		@SuppressWarnings("deprecation")
 		String imgURL = is.getServingUrl(blobKey);
 		@SuppressWarnings("deprecation")
 		String thumbURL = is.getServingUrl(blobKey, 150, false);
+		
+		//If user is an admin, default permission is private, otherwise public.
 		String defaultPermission = "public";
 		if(userService.isUserAdmin())
 		{
 			defaultPermission = "private";
 		}
 		
+		//Create an entity and add it to the datastore.
 		Entity user = new Entity("User");
 		user.setProperty("email", email);
 		user.setProperty("URL", imgURL);
 		user.setProperty("thumbURL", thumbURL);
 		user.setProperty("permission", defaultPermission);
 		datastore.put(user);
-	
-
+		
+		//Error if bo data in blob.
 		if (blobKey == null)
 		{
 			res.sendRedirect("/");
@@ -61,7 +72,6 @@ public class Upload extends HttpServlet
 		} else
 		{
 			System.out.println("Uploaded a file with blobKey: " + blobKey.getKeyString());
-			//res.sendRedirect("/serve?blob-key=" + blobKey.getKeyString());
 			res.sendRedirect("/viewimages.jsp");
 		}
 	}

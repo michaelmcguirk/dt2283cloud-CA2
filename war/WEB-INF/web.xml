@@ -5,8 +5,8 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>Assignment</servlet-name>
-		<servlet-class>ie.mydit.mcguirk.michael.AssignmentServlet</servlet-class>
+		<servlet-name>LoginCheck</servlet-name>
+		<servlet-class>ie.mydit.mcguirk.michael.LoginCheck</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Upload</servlet-name>
@@ -25,8 +25,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>ie.mydit.mcguirk.michael.SetPermission</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Assignment</servlet-name>
-		<url-pattern>/assignment</url-pattern>
+		<servlet-name>LoginCheck</servlet-name>
+		<url-pattern>/logincheck</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
@@ -53,7 +53,38 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>userimages</web-resource-name>
+            <url-pattern>/viewimages.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>allimages</web-resource-name>
+            <url-pattern>/viewalluserimages.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>upload</web-resource-name>
+            <url-pattern>/upload.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+	
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>
