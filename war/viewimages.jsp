@@ -20,7 +20,7 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 
 <html>
  	<head>
- 		<title>View Your Images</title>
+ 		<title>View Your Pictures</title>
  		<link rel="stylesheet" type="text/html" href="${pageContext.request.contextPath}/style.css"/>
  		
  		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -55,6 +55,8 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 			String imgURL = (String) result.getProperty("URL");
 			String email = (String) result.getProperty("email");
 			String permission = (String) result.getProperty("permission");
+			
+			//If image is public, show "make private" button
 			if(permission.equals("public"))
 			{
 				permissionButton = "Make Private";

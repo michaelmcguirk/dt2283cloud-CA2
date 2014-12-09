@@ -14,7 +14,7 @@
 
 <html>
  	<head>
- 		<title>View Public Images</title>
+ 		<title>View Public Pictures</title>
  		<link rel="stylesheet" type="text/html" href="${pageContext.request.contextPath}/style.css"/>
  		
  		 <script src="//code.jquery.com/jquery-1.10.2.js"></script>

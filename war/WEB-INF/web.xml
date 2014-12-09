@@ -13,10 +13,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>ie.mydit.mcguirk.michael.Upload</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>Serve</servlet-name>
-		<servlet-class>ie.mydit.mcguirk.michael.Serve</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>Delete</servlet-name>
 		<servlet-class>ie.mydit.mcguirk.michael.Delete</servlet-class>
 	</servlet>
@@ -31,10 +27,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
 		<url-pattern>/upload</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Serve</servlet-name>
-		<url-pattern>/serve</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Delete</servlet-name>

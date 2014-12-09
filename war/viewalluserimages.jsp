@@ -21,7 +21,7 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 
 <html>
  	<head>
- 		<title>View All Images</title>
+ 		<title>View All Pictures</title>
  		<link rel="stylesheet" type="text/html" href="${pageContext.request.contextPath}/style.css"/>
  		
  		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -43,6 +43,8 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
  		String permission = "public";
  		Filter userFilter = new FilterPredicate("email", FilterOperator.EQUAL, userEmail);
  		Filter permissionFilter = new FilterPredicate("permission", FilterOperator.EQUAL, permission);
+ 		
+ 		//composite filter for entities that match the user email or that are public.
  		Filter mainFilter = CompositeFilterOperator.or(userFilter, permissionFilter);
 		Query q = new Query("User").setFilter(mainFilter);
 		PreparedQuery pq = datastore.prepare(q);
@@ -64,6 +66,7 @@ import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 				<a href="<%= imgURL%>"><img src="<%= thumbURL%>"></a>
 				<p>
 	<%			
+				//if image belongs to current user, show delete button.
 				if(userEmail.equals(email))
 				{
 	%>

@@ -21,6 +21,7 @@
 	 	<li><a href ="/viewalluserimages.jsp">All Pictures</a></li>
 	 	<li>&nbsp</li>
 	 	<%
+	 	//if user is an admin, show link to admin page.
 	 	if(userService.isUserAdmin())
 	 	{
 	 	%>
@@ -32,10 +33,13 @@
 	 	<li><a href="/upload.jsp">Upload</a></li>
 	 	<li>&nbsp</li>
 	 	<li><a href="<%= logoutURL%>">Logout</a></li>
+	 	<li>&nbsp</li>
+	 	<li><a href="/userguide.pdf">Help</a></li>
 	 <%
 	 }
 	 else
 	 {
+	 //if user is not logged in, only show login link.
 	 %>
 	 	<li>Please login to use all features</li>
 	 	<li>&nbsp</li>

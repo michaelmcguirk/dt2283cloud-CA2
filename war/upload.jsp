@@ -6,7 +6,7 @@ BlobstoreServiceFactory.getBlobstoreService(); %>
 
 <html>
  	<head>
- 		<title>Upload Image</title>
+ 		<title>Upload Picture</title>
  		<link rel="stylesheet" type="text/html" href="${pageContext.request.contextPath}/style.css"/>
  		
  		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
